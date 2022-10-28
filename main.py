@@ -133,14 +133,18 @@ def main():
     path = config.get('config', 'path')
     allow_user_input = config.getboolean('config', 'allow_user_input')
     allow_path_input = config.getboolean('config', 'allow_path_input')
+    if not allow_path_input and not allow_path_input:
+        print("Allow at least one input")
+        return
+
     ids = []
     if allow_path_input:
-        ids.extend([name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))])
+        try:
+            ids.extend([name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))])
+        except FileNotFoundError:
+            print(f"No such file or directory: {path}")
     if allow_user_input:
         ids.extend(get_user_input())
-    if not ids:
-        print("allow at least one input")
-        return
 
     for folder_name in ids:
         try:
